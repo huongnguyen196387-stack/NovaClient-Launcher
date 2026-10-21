@@ -53,7 +53,7 @@ jobs:
       - name: Clone LeviLaunchroid (kèm submodule preloader + libHttpClient)
         run: |
           git clone --recursive --depth 1 --shallow-submodules \
-            --branch "${{ inputs.launcher_ref }}" \
+            --branch "${{ inputs.launcher_ref || 'v1.5.27' }}" \
             https://github.com/LiteLDev/LeviLaunchroid launcher
 
       - uses: actions/download-artifact@v4
@@ -64,8 +64,8 @@ jobs:
       - name: Đổi tên, đổi id, nhúng Nova Client
         run: |
           python3 nova/launcher-fork/apply_nova_branding.py launcher \
-            --name "${{ inputs.app_name }}" \
-            --app-id "${{ inputs.app_id }}" \
+            --name "${{ inputs.app_name || 'Nova Launcher' }}" \
+            --app-id "${{ inputs.app_id || 'com.nova.launcher' }}" \
             --levipack "$(ls levipack/*.levipack | head -n1)"
 
       # Launcher dùng plugin Firebase nên bắt buộc có google-services.json. Repo gốc cũng dùng file
@@ -83,7 +83,7 @@ jobs:
               {
                 "client_info": {
                   "mobilesdk_app_id": "1:000000000000:android:0000000000000000000000",
-                  "android_client_info": { "package_name": "${{ inputs.app_id }}" }
+                  "android_client_info": { "package_name": "${{ inputs.app_id || 'com.nova.launcher' }}" }
                 },
                 "oauth_client": [],
                 "api_key": [ { "current_key": "AIzaSyCIOnlyPlaceholderKey" } ],
